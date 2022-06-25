@@ -12,7 +12,7 @@ enum TokenType {
   case LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE, COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR
   
   // One or two char tokens
-  case BANG, BAN_EQUAL, EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL, LESS, LESS_EQUAL
+  case BANG, BANG_EQUAL, EQUAL, EQUAL_EQUAL, GREATER, GREATER_EQUAL, LESS, LESS_EQUAL, RIGHT, RIGHT_EQUAL
   
   // Literals
   case IDENTIFIER, STRING, NUMBER
@@ -26,10 +26,16 @@ enum TokenType {
 struct Token {
   let type: TokenType
   let lexeme: String
-  let literal: Any
+  let literal: Any?
   let line: Int
   
   func toString() -> String {
-    return "\(type) \(lexeme) \(literal)"
+    return "\(type) \(lexeme)"
+  }
+}
+
+extension Token: CustomDebugStringConvertible {
+  var debugDescription: String {
+    return toString()
   }
 }

@@ -33,8 +33,16 @@ class Lox {
       print("No file, bye")
       return
     }
-    
-    print("You have entered file name: \(filename). Goodbye")
+        
+    do {
+      if let source = try FileReader.readLoxTextFile(name: filename) {
+        startRunning(source: source)
+      } else {
+        throw LoxError.fileReadingError
+      }
+    } catch {
+      print("Error when reading file: \(error)")
+    }
   }
   
   static func readFromCLI() {
@@ -61,15 +69,20 @@ class Lox {
   
   private static func startRunning(source: String) {
     let scanner = Scanner(source: source)
-    print("Input: \(scanner.scanTokens())")
+    let tokens = scanner.scanTokens()
+    print("Input: \(tokens.map { $0.debugDescription })")
   }
   
-  private static func throwError(line: Int, message: String) {
+  static func throwError(line: Int, message: String) {
     reportError(line: line, location: "", message: message)
   }
   
   private static func reportError(line: Int, location: String, message: String) {
     print("[line \(line)] Error \(location): \(message)")
     hasError = true
+  }
+  
+  private enum LoxError: Error {
+    case fileReadingError
   }
 }
