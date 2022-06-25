@@ -80,6 +80,11 @@ class Scanner {
     case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
       handleNumber()
     default:
+      if isIdentifierStartSymbol(currentChar) {
+        handleIdentifier()
+        break
+      }
+      
       Lox.throwError(line: line, error: .unexpectedCharacter)
       break
     }
@@ -180,6 +185,19 @@ extension Scanner {
     addToken(.NUMBER, literal: literal)
   }
   
+  private func handleIdentifier() {
+    while isIdentifierSymbol(peek()) {
+      advance()
+    }
+    
+    let string = String(source[start..<current])
+    let tokenType = TokenType.keywordsMap[string] ?? .IDENTIFIER
+    addToken(tokenType, literal: string)
+  }
+}
+
+// MARK: Character type check methods
+extension Scanner {
   private func isDigit(_ char: Character) -> Bool {
     switch char {
     case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
@@ -187,6 +205,23 @@ extension Scanner {
     default:
       return false
     }
+  }
+  
+  private func isAlpha(_ char: Character) -> Bool {
+    return (char >= "a" && char <= "z") ||
+    (char >= "A" && char <= "Z")
+  }
+  
+  private func isUnderscore(_ char: Character) -> Bool {
+    return char == "_"
+  }
+  
+  private func isIdentifierStartSymbol(_ char: Character) -> Bool {
+    return isAlpha(char) || isUnderscore(char)
+  }
+  
+  private func isIdentifierSymbol(_ char: Character) -> Bool {
+    return isIdentifierStartSymbol(char) || isDigit(char)
   }
 }
 

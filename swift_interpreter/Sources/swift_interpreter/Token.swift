@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TokenType {
+enum TokenType: String {
   // Single-char tokens
   case LEFT_PAREN, RIGHT_PAREN, LEFT_BRACE, RIGHT_BRACE, COMMA, DOT, MINUS, PLUS, SEMICOLON, SLASH, STAR
   
@@ -21,6 +21,19 @@ enum TokenType {
   case AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR, PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE
 
   case EOF
+  
+  static var keywordsMap: [String: TokenType] {
+    var dict: [String: TokenType] = [:]
+    for keyword in keywords {
+      dict[keyword.rawValue.lowercased()] = keyword
+    }
+    
+    return dict
+  }
+  
+  static var keywords: [TokenType] {
+    return [AND, CLASS, ELSE, FALSE, FUN, FOR, IF, NIL, OR, PRINT, RETURN, SUPER, THIS, TRUE, VAR, WHILE]
+  }
 }
 
 struct Token {
