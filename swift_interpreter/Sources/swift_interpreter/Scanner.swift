@@ -77,8 +77,10 @@ class Scanner {
       line += 1
     case "\"":
       handleString()
+    case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
+      handleNumber()
     default:
-      Lox.throwError(line: line, message: "Unexpected character")
+      Lox.throwError(line: line, error: .unexpectedCharacter)
       break
     }
   }
@@ -125,6 +127,14 @@ extension Scanner {
     return source[current]
   }
   
+  private func peekNext() -> Character {
+    if source.index(after: current) == source.endIndex {
+      return "\0"
+    }
+    
+    return source[source.index(after: current)]
+  }
+  
   private func handleString() {
     while peek() != "\"" && !isAtEnd {
       if peek() == "\n" {
@@ -134,7 +144,7 @@ extension Scanner {
     }
     
     if isAtEnd {
-      Lox.throwError(line: line, message: "Unterminated string")
+      Lox.throwError(line: line, error: .stringScanningError)
       return
     }
     
@@ -149,6 +159,35 @@ extension Scanner {
       addToken(.STRING, literal: source[literalStartIndex...literalEndIndex])
     }
   }
+  
+  private func handleNumber() {
+    while isDigit(peek()) {
+      advance()
+    }
+      
+    if peek() == "." && isDigit(peekNext()) {
+      advance()
+      while isDigit(peek()) {
+        advance()
+      }
+    }
+    
+    guard let literal = Double(source[start..<current]) else {
+      Lox.throwError(line: line, error: .numberScanningError)
+      return
+    }
+    
+    addToken(.NUMBER, literal: literal)
+  }
+  
+  private func isDigit(_ char: Character) -> Bool {
+    switch char {
+    case "0", "1", "2", "3", "4", "5", "6", "7", "8", "9":
+      return true
+    default:
+      return false
+    }
+  }
 }
 
 
@@ -159,7 +198,6 @@ extension Scanner {
   }
   
   private func incrementCurrent() {
-    Logger.log("incrementing \(current) to \(source.index(after: current))")
     current = source.index(after: current)
   }
 }

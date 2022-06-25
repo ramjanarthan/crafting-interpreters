@@ -73,16 +73,12 @@ class Lox {
     print("Input: \(tokens.map { $0.debugDescription })")
   }
   
-  static func throwError(line: Int, message: String) {
-    reportError(line: line, location: "", message: message)
+  static func throwError(line: Int, error: LoxError) {
+    reportError(line: line, location: "", message: error.description)
   }
   
   private static func reportError(line: Int, location: String, message: String) {
     print("[line \(line)] Error \(location): \(message)")
     hasError = true
-  }
-  
-  private enum LoxError: Error {
-    case fileReadingError
   }
 }
