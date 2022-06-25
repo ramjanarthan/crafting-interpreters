@@ -159,7 +159,7 @@ extension Scanner {
   }
   
   private func incrementCurrent() {
-    print("incrementing \(current) to \(source.index(after: current))")
+    Logger.log("incrementing \(current) to \(source.index(after: current))")
     current = source.index(after: current)
   }
 }

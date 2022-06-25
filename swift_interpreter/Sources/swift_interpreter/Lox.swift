@@ -47,7 +47,7 @@ class Lox {
   
   static func readFromCLI() {
     while (true) {
-      print("$ ")
+      print("> ")
       guard let input = readLine() else {
         print("No input, bye")
         return
