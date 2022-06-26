@@ -23,3 +23,16 @@ How are errors handled? Are there exceptions thrown?
  
  3. Lox is a pretty tiny language. What features do you think it is missing that would make it annoying to use for real programs? (Aside from the standard library, of course.)
  Ans: Protocols or interfaces are missing. No checks for class properties, could lead to nasty runtime issues. 
+
+## Chapter 4 Challenges
+
+1. The lexical grammars of Python and Haskell are not regular. What does that mean, and why aren’t they?
+Ans. That means their grammars can't be expressed as regular expressions. Left recursiveness?
+
+2. Aside from separating tokens—distinguishing print foo from printfoo—spaces aren’t used for much in most languages. However, in a couple of dark corners, a space does affect how code is parsed in CoffeeScript, Ruby, and the C preprocessor. Where and what effect does it have in each of those languages?
+Ans. Indentation based parsing? 
+
+3. Our scanner here, like most, discards comments and whitespace since those aren’t needed by the parser. Why might you want to write a scanner that does not discard those? What would it be useful for?
+Ans: Syntax formatting/Auto indenting? Meta information like what % of code is comments vs code 
+
+4. Add support to Lox’s scanner for C-style /* ... */ block comments. Make sure to handle newlines in them. Consider allowing them to nest. Is adding support for nesting more work than you expected? Why?

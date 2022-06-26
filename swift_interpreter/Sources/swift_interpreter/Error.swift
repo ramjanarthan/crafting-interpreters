@@ -12,6 +12,7 @@ enum LoxError: Error, CustomStringConvertible {
   case numberScanningError
   case stringScanningError
   case unexpectedCharacter
+  case unclosedCommentError
   
   var description: String {
     switch self {
@@ -23,6 +24,8 @@ enum LoxError: Error, CustomStringConvertible {
       return "Unterminated string"
     case .unexpectedCharacter:
       return "Unexpected character"
+    case .unclosedCommentError:
+      return "Unclosed multiline comment"
     }
   }
 }

@@ -20,6 +20,10 @@ let package = Package(
             ]),
         .testTarget(
             name: "swift_interpreterTests",
-            dependencies: ["swift_interpreter"]),
+            dependencies: ["swift_interpreter"],
+            resources: [
+              .process("Resources")
+            ]
+        ),
     ]
 )

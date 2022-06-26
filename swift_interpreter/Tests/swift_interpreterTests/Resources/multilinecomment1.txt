@@ -1,0 +1,9 @@
+// this is a normal comment
+var x = "asdlfkj"
+while hello 123.23452334
+{{((  laskdf and
+/*
+
+asdf this a multiline comment
+*/
+"adsfaq_123" ad_234 + - <= 234.03 ))}}

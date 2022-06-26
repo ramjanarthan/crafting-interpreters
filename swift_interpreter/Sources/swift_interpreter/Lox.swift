@@ -71,6 +71,7 @@ class Lox {
     let scanner = Scanner(source: source)
     let tokens = scanner.scanTokens()
     print("Input: \(tokens.map { $0.debugDescription })")
+    print("Total lines: \(scanner.line)")
   }
   
   static func throwError(line: Int, error: LoxError) {

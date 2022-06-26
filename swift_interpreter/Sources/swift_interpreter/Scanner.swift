@@ -13,7 +13,7 @@ class Scanner {
   
   private var start: String.Index
   private var current: String.Index
-  private var line = 1
+  private(set) var line = 1
   
   init(source: String) {
     self.source = source
@@ -68,6 +68,8 @@ class Scanner {
         while peek() != "\n" && !isAtEnd {
           advance()
         }
+      } else if match("*") {
+        handleMultiLineComment()
       } else {
         addToken(.SLASH)
       }
@@ -193,6 +195,25 @@ extension Scanner {
     let string = String(source[start..<current])
     let tokenType = TokenType.keywordsMap[string] ?? .IDENTIFIER
     addToken(tokenType, literal: string)
+  }
+  
+  private func handleMultiLineComment() {
+    while peek() != "*" {
+      if peek() == "\n" {
+        line += 1
+      }
+      
+      advance()
+    }
+    // Consume last *
+    advance()
+    
+    guard peek() == "/" else {
+      Lox.throwError(line: line, error: LoxError.unclosedCommentError)
+      return
+    }
+    // Consume last /
+    advance()
   }
 }
 
